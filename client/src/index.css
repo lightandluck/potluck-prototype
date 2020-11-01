@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.offering {
+  background-color: aqua;
+}
+
+.potluck-item {
+  background-color: green;
+}
