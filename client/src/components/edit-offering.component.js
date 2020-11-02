@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-
-export default class CreateOffering extends Component {
+export default class EditOffering extends Component {
   constructor(props) {
     super(props);
 
@@ -24,19 +23,26 @@ export default class CreateOffering extends Component {
   }
 
   componentDidMount() {
-    axios.get('/players')
+    axios.get('/offerings/'+this.props.match.params.id)
       .then(response => {
-        if (response.data.length > 0) {
-          this.setState({
-            players: response.data.map(player => player.name),
-            playerName: response.data[0].name
-          })
-        }
+        this.setState({
+          playerName: response.data.playerName,
+          officialName: response.data.officialName,
+          title: response.data.title,
+          description: response.data.description
+        })   
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+
+    axios.get('/players/')
+      .then(response => {
+        this.setState({ players: response.data.map(player => player.name) });
       })
       .catch((error) => {
         console.log(error);
       })
-
   }
 
   onChangePlayerName(e) {
@@ -75,18 +81,19 @@ export default class CreateOffering extends Component {
 
     console.log(offering);
 
-    axios.post('/offerings/add', offering)
+    axios.post('/offerings/update/'+this.props.match.params.id, offering)
       .then(res => {
         console.log(res.data);
         window.location = '/';
       });
+    
   }
 
   render() {
     return (
-    <div>
-      <h3>Create New Offering</h3>
-      <form onSubmit={this.onSubmit}>
+      <div>
+        <h3>Edit Offering Log</h3>
+        <form onSubmit={this.onSubmit}>
         <div className="form-group"> 
           <label>Player name: </label>
           <select ref={this.playerInput}
@@ -133,10 +140,10 @@ export default class CreateOffering extends Component {
         </div>
 
         <div className="form-group">
-          <input type="submit" value="Create Offering" className="btn btn-primary" />
+          <input type="submit" value="Edit Offering" className="btn btn-primary" />
         </div>
       </form>
-    </div>
+      </div>
     )
   }
 }
