@@ -13,9 +13,9 @@ code {
 }
 
 .offering {
-  background-color: aqua;
+  background-color: hsl(182, 67%, 48%)
 }
 
 .potluck-item {
-  background-color: green;
+  background-color: hsl(90, 67%, 48%);
 }
