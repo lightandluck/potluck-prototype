@@ -129,7 +129,7 @@ export default class OfferingsList extends Component {
           </thead>
           <tbody>
             { this.offeringsList() }
-            <tr>&nbsp;</tr>
+            <tr><td colSpan="5">Potluck Items</td></tr>
             { this.potluckList() }
           </tbody>
         </table>
