@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
   uri = process.env.ATLAS_URI;
 }
 
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 
 const connection = mongoose.connection;
 
@@ -25,9 +25,11 @@ connection.once('open', () => {
 
 const playersRouter = require('./routes/players');
 const offeringsRouter = require('./routes/offerings');
+const wishlistsRouter = require('./routes/wishlists');
 
 app.use('/players', playersRouter);
 app.use('/offerings', offeringsRouter);
+app.use('/wishlists', wishlistsRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static( 'client/build' ));
