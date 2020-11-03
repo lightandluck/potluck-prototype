@@ -86,7 +86,7 @@ export default class OfferingsList extends Component {
     return this.state.offerings
       .filter(el => el.playerName !== currentPlayerName)
       .map(currentoffering => {
-        return <PotluckItem offering={currentoffering} deleteOffering={this.deleteOffering} key={currentoffering._id}/>;
+        return <PotluckItem offering={currentoffering} key={currentoffering._id}/>;
       })
   }
 
