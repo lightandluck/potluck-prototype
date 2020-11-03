@@ -14,6 +14,8 @@ router.route('/:id').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
+// TODO: Figure out how to add only unique items to wishlist
 router.route('/add/:id').post((req, res) => {
   const playerId = req.body.playerId;
   const potluckItemId = req.body.potluckItemId;
