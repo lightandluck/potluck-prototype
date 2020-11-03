@@ -17,14 +17,19 @@ router.route('/:id').get((req, res) => {
 router.route('/add/:id').post((req, res) => {
   const playerId = req.body.playerId;
   const potluckItemId = req.body.potluckItemId;
-  
-  const query = Wishlist.find();
+  const potluckItemOfficialName = req.body.potluckItemOfficialName;
 
+  const potluckItem = {
+    "itemId": potluckItemId, 
+    "officialName": potluckItemOfficialName
+  }
+
+  const query = Wishlist.find();
   const filter = { "playerId": playerId };
-  query.findOneAndUpdate(filter,
+  query.findOneAndUpdate(
+    filter,
+    { $push: { "potluckItems": potluckItem } },
     {
-      $push: { "potluckItems": potluckItemId }
-    }, {
       new: true,
       upsert: true
     })
