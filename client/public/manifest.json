@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Potluck App",
+  "name": "Creates wantlist for Trade Maximizer",
   "icons": [
     {
       "src": "favicon.ico",
