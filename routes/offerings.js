@@ -34,6 +34,12 @@ router.route('/:id').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/byPlayer/:name').get((req, res) => {
+  Offering.find({ "playerName": req.params.name })
+    .then(offering => res.json(offering))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/:id').delete((req, res) => {
   Offering.findByIdAndDelete(req.params.id)
     .then(() => res.json('Offering deleted.'))

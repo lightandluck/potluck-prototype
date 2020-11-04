@@ -7,6 +7,7 @@ import OfferingsList from "./components/offerings-list.component";
 import EditOffering from "./components/edit-offering.component";
 import CreateOffering from "./components/create-offering.component";
 import CreatePlayer from "./components/create-player.component";
+import WishlistsList from "./components/wishlists-list.component";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/edit/:id" component={EditOffering} />
         <Route path="/create" component={CreateOffering} />
         <Route path="/player" component={CreatePlayer} />
+        <Route path="/wishlist" component={WishlistsList} />
       </div>
     </Router>
   );
