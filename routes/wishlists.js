@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 let Wishlist = require('../models/wishlist.model');
+let Offering = require('../models/offering.model');
 
 router.route('/').get((req, res) => {
   Wishlist.find()
@@ -9,9 +10,10 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/:id').get((req, res) => {
-  Wishlist.find({ "playerId": req.params.id})
-    .then(wishlist => res.json(wishlist))
-    .catch(err => res.status(400).json('Error: ' + err));
+  Wishlist.findOne({ playerId: req.params.id })
+      .populate('potluckItems')
+      .then(wishlist => res.json(wishlist))
+      .catch(err => res.status(400).json('Error: ' + err));    
 });
 
 
@@ -26,11 +28,12 @@ router.route('/add/:id').post((req, res) => {
     "officialName": potluckItemOfficialName
   }
 
+  // TODO: Figure out if this ref works!
   const query = Wishlist.find();
   const filter = { "playerId": playerId };
   query.findOneAndUpdate(
     filter,
-    { $push: { "potluckItems": potluckItem } },
+    { $push: { "potluckItems": potluckItemId } },
     {
       new: true,
       upsert: true
