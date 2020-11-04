@@ -33,7 +33,7 @@ router.route('/add/:id').post((req, res) => {
   const filter = { "playerId": playerId };
   query.findOneAndUpdate(
     filter,
-    { $push: { "potluckItems": potluckItemId } },
+    { $addToSet: { "potluckItems": potluckItemId } },
     {
       new: true,
       upsert: true
