@@ -6,13 +6,18 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@zendeskgarden/react-tables": "^8.25.2",
+    "@zendeskgarden/react-theming": "^8.25.2",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-datepicker": "^3.3.0",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
