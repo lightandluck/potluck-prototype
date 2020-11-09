@@ -1,7 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import {
   Table,
-  Caption,
   Head,
   HeaderRow,
   HeaderCell,
@@ -24,12 +24,6 @@ const DraggableRow = styled(Row)`
   `
       : ''};
 `;
-
-// const StyledCaption = styled(Caption)`
-//   line-height: ${props => props.theme.lineHeights.xl};
-//   font-size: ${props => props.theme.fontSizes.xl};
-//   margin-bottom: ${props => props.theme.space.sm};
-// `;
 
 class DraggableCell extends React.Component {
   constructor() {
@@ -106,11 +100,11 @@ const DraggableContainer = styled.div`
   }
 `;
 
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: `item ${k}`
-  }));
+// const getItems = count =>
+//   Array.from({ length: count }, (v, k) => k).map(k => ({
+//     id: `item-${k}`,
+//     content: `item ${k}`
+//   }));
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -124,9 +118,19 @@ export default class DraggableExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: getItems(10)
+      offerings: []
     };
     this.onDragEnd = this.onDragEnd.bind(this);
+  }
+  
+  componentDidMount() {
+    axios.get('/offerings')
+      .then(response => {
+        this.setState({ offerings: response.data })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
   onDragEnd(result) {
@@ -134,11 +138,11 @@ export default class DraggableExample extends React.Component {
       return;
     }
 
-    const items = reorder(this.state.items, result.source.index, result.destination.index);
+    const offerings = reorder(this.state.offerings, result.source.index, result.destination.index);
 
     this.setState(
       {
-        items
+        offerings
       },
       () => {
         document.getElementById(result.draggableId).focus();
@@ -153,18 +157,18 @@ export default class DraggableExample extends React.Component {
           <Head>
             <HeaderRow>
               <HeaderCell isMinimum />
-              <HeaderCell>Subject</HeaderCell>
-              <HeaderCell>Requester</HeaderCell>
-              <HeaderCell>Requested</HeaderCell>
-              <HeaderCell>Type</HeaderCell>
+              <HeaderCell>Title</HeaderCell>
+              <HeaderCell>Player</HeaderCell>
+              <HeaderCell>Description</HeaderCell>
+              <HeaderCell>Official name</HeaderCell>
             </HeaderRow>
           </Head>
           <Droppable droppableId="droppable">
             {(provided, droppableSnapshot) => {
               return (
                 <Body ref={provided.innerRef} isDraggingOver={droppableSnapshot.isDraggingOver}>
-                  {this.state.items.map((item, index) => (
-                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {this.state.offerings.map((offering, index) => (
+                    <Draggable key={offering._id} draggableId={offering._id} index={index}>
                       {(provided, snapshot) => (
                         <DraggableRow
                           ref={provided.innerRef}
@@ -178,21 +182,21 @@ export default class DraggableExample extends React.Component {
                           {...provided.draggableProps}
                         >
                           <DraggableCell isMinimum isDragOccurring={snapshot.isDragging}>
-                            <DraggableContainer id={item.id} {...provided.dragHandleProps}>
+                            <DraggableContainer id={offering._id} {...provided.dragHandleProps}>
                               <span>:::</span>
                             </DraggableContainer>
                           </DraggableCell>
                           <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            {item.content}
+                            {offering.title}
                           </DraggableCell>
                           <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            John Smith
+                            {offering.playerName}
                           </DraggableCell>
                           <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            15 minutes ago
+                            {offering.description}
                           </DraggableCell>
                           <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            Ticket
+                            {offering.officialName}
                           </DraggableCell>
                         </DraggableRow>
                       )}
