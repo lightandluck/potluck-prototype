@@ -9,6 +9,7 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   const playerName = req.body.playerName;
+  const playerId = req.body.playerId;
   const officialName = req.body.officialName;
   const title = req.body.title;
   const description = req.body.description;
@@ -17,6 +18,7 @@ router.route('/add').post((req, res) => {
 
   const newOffering = new Offering({
     playerName,
+    playerId,
     officialName,
     title,
     description,
@@ -38,6 +40,12 @@ router.route('/:id').get((req, res) => {
 
 router.route('/byPlayer/:name').get((req, res) => {
   Offering.find({ "playerName": req.params.name })
+    .then(offering => res.json(offering))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/byId/:id').get((req, res) => {
+  Offering.find({ "playerId": req.params.id })
     .then(offering => res.json(offering))
     .catch(err => res.status(400).json('Error: ' + err));
 });
