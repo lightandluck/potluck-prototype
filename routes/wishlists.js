@@ -13,7 +13,8 @@ router.route('/').get((req, res) => {
 
 router.route('/:id').get((req, res) => {
   Wishlist.findOne({ playerId: req.params.id })
-      .populate('potluckItems', '-acceptableTrades')
+      .populate('offerings.offeringId', '-acceptableTrades -updatedAt -createdAt -__v')
+      .populate('playerId', 'name')
       .then(wishlist => res.json(wishlist))
       .catch(err => res.status(400).json('Error: ' + err));    
 });
@@ -26,7 +27,6 @@ router.route('/add').post((req, res) => {
     isOwner: false
   }
 
-  // TODO: Figure out if this ref works!
   const query = Wishlist.find();
   const filter = { "playerId": playerId };
   query.findOneAndUpdate(
