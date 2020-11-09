@@ -51,7 +51,7 @@ export default class OfferingsList extends Component {
               playerId = playerData[0]._id,
               playerName = playerData[0].name
 
-          axios.get('/offerings/byPlayer/' + playerName)
+          axios.get('/offerings/byId/' + playerId)
             .then(response => {
               if (response.data.length > 0) {
                 this.setState({
@@ -74,8 +74,9 @@ export default class OfferingsList extends Component {
                 })
               }
               else {
+                console.log(response.data.offerings);
                 this.setState({ 
-                  wishlistItems: response.data.potluckItems
+                  wishlistItems: response.data.offerings
                 })
               }
             })
@@ -99,7 +100,7 @@ export default class OfferingsList extends Component {
   wishlistList () {
     return this.state.wishlistItems
       .map(currentoffering => {
-        return <WishlistItem offering={currentoffering} addToWishlist={this.addToWishlist} key={currentoffering._id}/>;
+        return <WishlistItem offering={currentoffering.offeringId} key={currentoffering._id}/>;
       })
   }
 
@@ -107,6 +108,7 @@ export default class OfferingsList extends Component {
     let idx = e.target.selectedIndex;
 	  let dataset = e.target.options[idx].dataset;
     
+    // TODO: get this by Player id, is it set in the select option?
     axios.get('/offerings/byPlayer/' + e.target.value)
       .then(response => {
         if (response.data.length > 0) {
@@ -128,7 +130,7 @@ export default class OfferingsList extends Component {
         }
         else {
           this.setState({
-            wishlistItems: response.data.potluckItems
+            wishlistItems: response.data.offerings
           })
         }
       })
