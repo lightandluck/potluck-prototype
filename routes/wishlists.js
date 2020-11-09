@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+
 let Wishlist = require('../models/wishlist.model');
 let Offering = require('../models/offering.model');
 
@@ -17,17 +19,19 @@ router.route('/:id').get((req, res) => {
 });
 
 
-// TODO: Figure out how to add only unique items to wishlist
-router.route('/add/:id').post((req, res) => {
+router.route('/add').post((req, res) => {
   const playerId = req.body.playerId;
-  const potluckItemId = req.body.potluckItemId;
+  const offeringInList = {
+    offeringId: ObjectId(req.body.offeringId),
+    isOwner: false
+  }
 
   // TODO: Figure out if this ref works!
   const query = Wishlist.find();
   const filter = { "playerId": playerId };
   query.findOneAndUpdate(
     filter,
-    { $addToSet: { "potluckItems": potluckItemId } },
+    { $addToSet: { "offerings": offeringInList } },
     {
       new: true,
       upsert: true

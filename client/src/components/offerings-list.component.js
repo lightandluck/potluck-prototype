@@ -79,12 +79,12 @@ export default class OfferingsList extends Component {
   }
 
   addToWishlist(offering) {
-    const potluckItem = {
+    const offeringInList = {
       playerId: this.state.playerId,
-      potluckItemId: offering._id
+      offeringId: offering._id
     }
 
-    axios.post('/wishlists/add/' + this.state.playerId, potluckItem)
+    axios.post('/wishlists/add', offeringInList)
       .then(res => {
         console.log(res.data)
       })

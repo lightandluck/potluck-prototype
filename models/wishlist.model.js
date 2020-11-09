@@ -2,9 +2,22 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const offeringInListSchema = new Schema({
+  offeringId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Offering',
+      required: true,
+      unique: true
+  }, 
+  isOwner: {
+      type: Boolean,
+      default: false
+  }
+});
+
 const wishlistSchema = new Schema({
-    playerId: { type: String, required: true },
-    potluckItems: [{ type: Schema.Types.ObjectId, ref: 'Offering' }]
+    playerId: { type: Schema.Types.ObjectId, ref: 'Player', required: true },
+    offerings: [offeringInListSchema]
   }, 
   { timestamps: true }
 );
