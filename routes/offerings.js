@@ -24,8 +24,10 @@ router.route('/add').post((req, res) => {
   });
 
   newOffering.save()
-  .then(() => res.json('Offering added!'))
-  .catch(err => res.status(400).json('Error: ' + err));
+    .then((offering) => { 
+      res.json('Offering added!') 
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').get((req, res) => {

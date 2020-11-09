@@ -21,12 +21,6 @@ router.route('/:id').get((req, res) => {
 router.route('/add/:id').post((req, res) => {
   const playerId = req.body.playerId;
   const potluckItemId = req.body.potluckItemId;
-  const potluckItemOfficialName = req.body.potluckItemOfficialName;
-
-  const potluckItem = {
-    "itemId": potluckItemId, 
-    "officialName": potluckItemOfficialName
-  }
 
   // TODO: Figure out if this ref works!
   const query = Wishlist.find();
