@@ -84,6 +84,9 @@ export default class EditOffering extends Component {
         console.log(res.data)
         window.location = '/';
       })
+      .catch( res => {
+        console.log(res.data);
+      })
   }
 
   render() {

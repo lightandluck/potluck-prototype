@@ -28,15 +28,30 @@ router.route('/add').post((req, res) => {
   }
 
   const query = Wishlist.find();
-  const filter = { "playerId": playerId };
-  query.findOneAndUpdate(
+
+  // filter out duplicate in wishlist array: https://stackoverflow.com/questions/33576223/using-mongoose-mongodb-addtoset-functionality-on-array-of-objects
+  const filter = { 
+    "playerId": playerId, 
+    'offerings.offeringId': { '$ne': ObjectId(offeringInList.offeringId) } 
+  };
+  
+  query.updateOne(
     filter,
     { $addToSet: { "offerings": offeringInList } },
     {
+      new: true,
       upsert: true
     })
     .then(() => res.json('Wishlist item added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => {
+      //TODO: Finding the duplicate sends a Mongo error, find a better fix for this
+      if (err.code === 11000) {
+        res.json('Duplicate item not added!')
+      }
+      else {
+        res.status(400).json(err);
+      }      
+    });
 });
 
 router.route('/:id').delete((req, res) => {
