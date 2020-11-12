@@ -9,7 +9,7 @@ const offeringInListSchema = new Schema({
       required: true,
       unique: true
   }, 
-  isOwner: {
+  isSteward: {
       type: Boolean,
       default: false
   }
