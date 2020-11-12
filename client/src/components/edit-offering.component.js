@@ -5,7 +5,6 @@ export default class EditOffering extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangePlayerName = this.onChangePlayerName.bind(this);
     this.onChangeOfficialName = this.onChangeOfficialName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -13,13 +12,11 @@ export default class EditOffering extends Component {
 
     this.state = {
       playerName: '',
+      playerId: '',
       officialName: '',
       title: '',
-      description: '',
-      players: []
+      description: ''
     }
-
-    this.playerInput = React.createRef();
   }
 
   componentDidMount() {
@@ -27,6 +24,7 @@ export default class EditOffering extends Component {
       .then(response => {
         this.setState({
           playerName: response.data.playerName,
+          playerId: response.data.playerId,
           officialName: response.data.officialName,
           title: response.data.title,
           description: response.data.description
@@ -35,20 +33,6 @@ export default class EditOffering extends Component {
       .catch(function (error) {
         console.log(error);
       })
-
-    axios.get('/players/')
-      .then(response => {
-        this.setState({ players: response.data.map(player => player.name) });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-
-  onChangePlayerName(e) {
-    this.setState({
-      playerName: e.target.value
-    })
   }
 
   onChangeOfficialName(e) {
@@ -69,7 +53,7 @@ export default class EditOffering extends Component {
     })
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
 
     const offering = {
@@ -81,12 +65,23 @@ export default class EditOffering extends Component {
 
     console.log(offering);
 
-    axios.post('/offerings/update/'+this.props.match.params.id, offering)
+    await axios.post('/offerings/update/'+this.props.match.params.id, offering)
       .then(res => {
         console.log(res.data);
-        window.location = '/';
       });
     
+    // TODO: Fix this to match wishlist schema??
+    const offeringInList = {
+      playerId: this.state.playerId,
+      offeringId: this.props.match.params.id,
+      isSteward: true
+    }
+
+    await axios.post('/wishlists/add', offeringInList)
+      .then(res => {
+        console.log(res.data)
+        window.location = '/';
+      })
   }
 
   render() {
@@ -96,20 +91,7 @@ export default class EditOffering extends Component {
         <form onSubmit={this.onSubmit}>
         <div className="form-group"> 
           <label>Player name: </label>
-          <select ref={this.playerInput}
-              required
-              className="form-control"
-              value={this.state.playerName}
-              onChange={this.onChangePlayerName}>
-              {
-                this.state.players.map(function(player) {
-                  return <option 
-                    key={player}
-                    value={player}>{player}
-                    </option>;
-                })
-              }
-          </select>
+          <p>{this.state.playerName}</p>
         </div>
         <div className="form-group"> 
           <label>Official name: </label>

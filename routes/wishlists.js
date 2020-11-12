@@ -24,7 +24,7 @@ router.route('/add').post((req, res) => {
   const playerId = req.body.playerId;
   const offeringInList = {
     offeringId: ObjectId(req.body.offeringId),
-    isSteward: false
+    isSteward: req.body.isSteward || false
   }
 
   const query = Wishlist.find();

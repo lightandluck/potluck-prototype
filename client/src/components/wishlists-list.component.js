@@ -51,20 +51,20 @@ export default class OfferingsList extends Component {
               playerId = playerData[0]._id,
               playerName = playerData[0].name
 
-          axios.get('/offerings/byId/' + playerId)
-            .then(response => {
-              if (response.data.length > 0) {
-                this.setState({
-                  offerings: response.data,
-                  players: playerData.map(player => { return { "name": player.name, "_id": player._id }}),
-                  playerName: playerName,
-                  playerId: playerId
-                })
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
+          // axios.get('/offerings/byPlayerId/' + playerId)
+          //   .then(response => {
+          //     if (response.data.length > 0) {
+          //       this.setState({
+          //         offerings: response.data,
+          //         players: playerData.map(player => { return { "name": player.name, "_id": player._id }}),
+          //         playerName: playerName,
+          //         playerId: playerId
+          //       })
+          //     }
+          //   })
+          //   .catch((error) => {
+          //     console.log(error)
+          //   })
 
           axios.get('/wishlists/' + playerId)
             .then(response => {

@@ -44,7 +44,7 @@ router.route('/byPlayer/:name').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/byId/:id').get((req, res) => {
+router.route('/byPlayerId/:id').get((req, res) => {
   Offering.find({ "playerId": req.params.id })
     .then(offering => res.json(offering))
     .catch(err => res.status(400).json('Error: ' + err));
