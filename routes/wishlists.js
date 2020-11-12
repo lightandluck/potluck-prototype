@@ -23,7 +23,7 @@ router.route('/:id').get((req, res) => {
 router.route('/add').post((req, res) => {
   const playerId = req.body.playerId;
   const offeringInList = {
-    offeringId: ObjectId(req.body.offeringId),
+    offeringId: req.body.offeringId,
     isSteward: req.body.isSteward || false
   }
 
@@ -33,7 +33,6 @@ router.route('/add').post((req, res) => {
     filter,
     { $addToSet: { "offerings": offeringInList } },
     {
-      new: true,
       upsert: true
     })
     .then(() => res.json('Wishlist item added!'))

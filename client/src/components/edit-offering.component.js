@@ -77,6 +77,8 @@ export default class EditOffering extends Component {
       isSteward: true
     }
 
+
+    // TODO: Probably remove this when creating item already adds to wishlist
     await axios.post('/wishlists/add', offeringInList)
       .then(res => {
         console.log(res.data)
