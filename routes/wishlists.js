@@ -31,8 +31,7 @@ router.route('/add').post((req, res) => {
 
   // filter out duplicate in wishlist array: https://stackoverflow.com/questions/33576223/using-mongoose-mongodb-addtoset-functionality-on-array-of-objects
   const filter = { 
-    "playerId": playerId, 
-    'offerings.offeringId': { '$ne': ObjectId(offeringInList.offeringId) } 
+    "playerId": playerId 
   };
   
   query.updateOne(

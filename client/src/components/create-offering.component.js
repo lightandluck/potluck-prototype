@@ -14,6 +14,7 @@ export default class CreateOffering extends Component {
 
     this.state = {
       playerName: '',
+      playerId: '',
       officialName: '',
       title: '',
       description: '',
@@ -29,7 +30,8 @@ export default class CreateOffering extends Component {
         if (response.data.length > 0) {
           this.setState({
             players: response.data.map(player => player.name),
-            playerName: response.data[0].name
+            playerName: response.data[0].name,
+            playerId: response.data[0].playerId
           })
         }
       })
@@ -63,7 +65,7 @@ export default class CreateOffering extends Component {
     })
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
 
     const offering = {
@@ -80,6 +82,23 @@ export default class CreateOffering extends Component {
         console.log(res.data);
         window.location = '/';
       });
+
+    // TODO: Fix this to match wishlist schema??
+    // Add new offering to personal wishlist, designate as steward
+    const offeringInList = {
+      playerId: this.state.playerId,
+      offeringId: this.props.match.params.id,
+      isSteward: true
+    }
+
+    await axios.post('/wishlists/add', offeringInList)
+      .then(res => {
+        console.log(res.data)
+        window.location = '/';
+      })
+      .catch( res => {
+        console.log(res.data);
+      })
   }
 
   render() {

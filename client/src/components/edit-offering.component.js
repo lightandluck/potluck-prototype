@@ -82,7 +82,7 @@ export default class EditOffering extends Component {
     await axios.post('/wishlists/add', offeringInList)
       .then(res => {
         console.log(res.data)
-        window.location = '/';
+        // window.location = '/';
       })
       .catch( res => {
         console.log(res.data);
