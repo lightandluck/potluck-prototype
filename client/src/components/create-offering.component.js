@@ -84,24 +84,25 @@ export default class CreateOffering extends Component {
 
     axios.post('/offerings/add', offering)
       .then(res => {
-        console.log(res.data);
+        // TODO: Fix this to match wishlist schema??
+        // Add new offering to personal wishlist, designate as steward
+        const offeringInList = {
+          playerId: res.data.playerId,
+          offeringId: res.data._id,
+          isSteward: true
+        }
+
+        axios.post('/wishlists/add', offeringInList)
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(res => {
+            console.log('Error: ')
+            console.log(res.data);
+          })
       });
 
-    // TODO: Fix this to match wishlist schema??
-    // Add new offering to personal wishlist, designate as steward
-    const offeringInList = {
-      playerId: this.state.playerId,
-      offeringId: this.props.match.params.id,
-      isSteward: true
-    }
-
-    await axios.post('/wishlists/add', offeringInList)
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch( res => {
-        console.log(res.data);
-      })
+    
   }
 
   render() {

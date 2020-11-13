@@ -27,7 +27,7 @@ router.route('/add').post((req, res) => {
 
   newOffering.save()
     .then((offering) => { 
-      res.json('Offering added!') 
+      res.json(offering);
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
