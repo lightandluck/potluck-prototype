@@ -6,8 +6,7 @@ const offeringInListSchema = new Schema({
   offeringId: {
       type: Schema.Types.ObjectId,
       ref: 'Offering',
-      required: true,
-      unique: true
+      required: true
   }, 
   isSteward: {
       type: Boolean,
@@ -16,7 +15,7 @@ const offeringInListSchema = new Schema({
 });
 
 const wishlistSchema = new Schema({
-    playerId: { type: Schema.Types.ObjectId, ref: 'Player', required: true },
+    playerId: { type: Schema.Types.ObjectId, ref: 'Player', required: true, unique: true },
     offerings: [offeringInListSchema]
   }, 
   { timestamps: true }
