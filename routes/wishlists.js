@@ -27,9 +27,6 @@ router.route('/add').post((req, res) => {
     isSteward: req.body.isSteward || false
   }
 
-  // console.log(req.body);
-  // console.log(req.body.offeringId);
-
   const query = Wishlist.find({ "playerId": playerId })
     // .then(docs => console.log(docs));
 

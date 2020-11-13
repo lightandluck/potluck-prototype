@@ -79,12 +79,13 @@ export default class OfferingsList extends Component {
   }
 
   addToWishlist(offering) {
-    const offeringInList = {
+    const wishedItem = {
       playerId: this.state.playerId,
-      offeringId: offering._id
+      offeringId: offering._id,
+      isSteward: false
     }
 
-    axios.post('/wishlists/add', offeringInList)
+    axios.post('/wishlists/add', wishedItem)
       .then(res => {
         console.log(res.data)
       })
@@ -135,7 +136,7 @@ export default class OfferingsList extends Component {
               {
                 this.state.players.map(function(player) {
                   return <option 
-                    key={player.name}
+                    key={player._id}
                     value={player.name}
                     data-playerid={player._id}
                     >

@@ -69,24 +69,6 @@ export default class EditOffering extends Component {
       .then(res => {
         console.log(res.data);
       });
-    
-    // TODO: Fix this to match wishlist schema??
-    const offeringInList = {
-      playerId: this.state.playerId,
-      offeringId: this.props.match.params.id,
-      isSteward: true
-    }
-
-
-    // TODO: Probably remove this when creating item already adds to wishlist
-    await axios.post('/wishlists/add', offeringInList)
-      .then(res => {
-        console.log(res.data)
-        // window.location = '/';
-      })
-      .catch( res => {
-        console.log(res.data);
-      })
   }
 
   render() {

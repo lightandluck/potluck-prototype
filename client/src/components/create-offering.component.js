@@ -29,9 +29,11 @@ export default class CreateOffering extends Component {
       .then(response => {
         if (response.data.length > 0) {
           this.setState({
-            players: response.data.map(player => player.name),
+            players: response.data.map(player => {
+              return { "name": player.name, "_id": player._id }
+            }),
             playerName: response.data[0].name,
-            playerId: response.data[0].playerId
+            playerId: response.data[0]._id
           })
         }
       })
@@ -42,8 +44,12 @@ export default class CreateOffering extends Component {
   }
 
   onChangePlayerName(e) {
+    let idx = e.target.selectedIndex;
+	  let dataset = e.target.options[idx].dataset;
+  
     this.setState({
-      playerName: e.target.value
+      playerName: e.target.value,
+      playerId: dataset.playerid
     })
   }
 
@@ -70,17 +76,15 @@ export default class CreateOffering extends Component {
 
     const offering = {
       playerName: this.state.playerName,
+      playerId: this.state.playerId,
       officialName: this.state.officialName,
       title: this.state.title,
       description: this.state.description
     };
 
-    console.log(offering);
-
     axios.post('/offerings/add', offering)
       .then(res => {
         console.log(res.data);
-        window.location = '/';
       });
 
     // TODO: Fix this to match wishlist schema??
@@ -93,8 +97,7 @@ export default class CreateOffering extends Component {
 
     await axios.post('/wishlists/add', offeringInList)
       .then(res => {
-        console.log(res.data)
-        window.location = '/';
+        console.log(res.data);
       })
       .catch( res => {
         console.log(res.data);
@@ -116,8 +119,9 @@ export default class CreateOffering extends Component {
               {
                 this.state.players.map(function(player) {
                   return <option 
-                    key={player}
-                    value={player}>{player}
+                    key={player._id}
+                    data-playerid={player._id}
+                    value={player.name}>{player.name}
                     </option>;
                 })
               }
