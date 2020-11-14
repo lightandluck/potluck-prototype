@@ -5,7 +5,6 @@ export default class EditOffering extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeOfficialName = this.onChangeOfficialName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -33,12 +32,6 @@ export default class EditOffering extends Component {
       .catch(function (error) {
         console.log(error);
       })
-  }
-
-  onChangeOfficialName(e) {
-    this.setState({
-      officialName: e.target.value
-    })
   }
 
   onChangeTitle(e) {
@@ -79,15 +72,6 @@ export default class EditOffering extends Component {
         <div className="form-group"> 
           <label>Player name: </label>
           <p>{this.state.playerName}</p>
-        </div>
-        <div className="form-group"> 
-          <label>Official name: </label>
-          <input type="text"
-              required
-              className="form-control"
-              value={this.state.officialName}
-              onChange={this.onChangeOfficialName}
-              />
         </div>
         <div className="form-group">
           <label>Title: </label>

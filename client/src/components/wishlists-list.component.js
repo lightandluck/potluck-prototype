@@ -14,7 +14,7 @@ const Offering = props => (
   </tr>
 )
 
-// TODO: Figure out how to show only items not on wishlist ---- further, already viewed maybe
+
 const WishlistItem = props => (
   <tr className="potluck-item">
     <td>{props.offering.playerName}</td>

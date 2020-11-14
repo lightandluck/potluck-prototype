@@ -103,6 +103,7 @@ export default class OfferingsList extends Component {
       })
   }
 
+  // TODO: Figure out how to show only items not on wishlist ---- further, already viewed maybe
   potluckList () {
     let currentPlayerName = this.state.playerName;
     return this.state.offerings
