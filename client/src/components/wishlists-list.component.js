@@ -2,23 +2,21 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Offering = props => (
-  <tr className="offering">
-    <td>{props.offering.playerName}</td>
-    <td>{props.offering.officialName}</td>
-    <td>{props.offering.title}</td>
-    <td>{props.offering.description}</td>
-    <td>
-      <Link to={"/edit/"+props.offering._id}>edit</Link> 
-    </td>
-  </tr>
-)
+// const Offering = props => (
+//   <tr className="offering">
+//     <td>{props.offering.playerName}</td>
+//     <td>{props.offering.title}</td>
+//     <td>{props.offering.description}</td>
+//     <td>
+//       <Link to={"/edit/"+props.offering._id}>edit</Link> 
+//     </td>
+//   </tr>
+// )
 
-
+// TODO: Add ability to edit stewarded items in this list?
 const WishlistItem = props => (
-  <tr className="potluck-item">
+  <tr className={props.isSteward ? 'offering' : 'potluck-item'}>
     <td>{props.offering.playerName}</td>
-    <td>{props.offering.officialName}</td>
     <td>{props.offering.title}</td>
     <td>{props.offering.description}</td>
     <td>
@@ -34,7 +32,6 @@ export default class OfferingsList extends Component {
     this.state = {
       playerName: '',
       playerId: '',
-      offerings: [],
       players: [],
       wishlistItems: []
     };
@@ -50,20 +47,13 @@ export default class OfferingsList extends Component {
           let playerData = response.data,
               playerId = playerData[0]._id,
               playerName = playerData[0].name
-
-          axios.get('/offerings/byPlayerId/' + playerId)
-            .then(response => {
-              if (response.data.length > 0) {
-                this.setState({
-                  offerings: response.data,
-                  players: playerData.map(player => { return { "name": player.name, "_id": player._id }}),
-                  playerName: playerName,
-                  playerId: playerId
-                })
-              }
-            })
-            .catch((error) => {
-              console.log(error)
+          
+            this.setState({
+              players: playerData.map(player => { 
+                return { "name": player.name, "_id": player._id }
+              }),
+              playerName: playerName,
+              playerId: playerId
             })
 
           axios.get('/wishlists/' + playerId)
@@ -74,7 +64,6 @@ export default class OfferingsList extends Component {
                 })
               }
               else {
-                console.log(response.data.offerings);
                 this.setState({ 
                   wishlistItems: response.data.offerings
                 })
@@ -90,17 +79,17 @@ export default class OfferingsList extends Component {
       })    
   }
 
-  offeringsList() {
-    return this.state.offerings
-      .map(currentoffering => {
-        return <Offering offering={currentoffering} deleteOffering={this.deleteOffering} key={currentoffering._id}/>;
-      })
-  }
+  // offeringsList() {
+  //   return this.state.offerings
+  //     .map(currentoffering => {
+  //       return <Offering offering={currentoffering} deleteOffering={this.deleteOffering} key={currentoffering._id}/>;
+  //     })
+  // }
 
   wishlistList () {
     return this.state.wishlistItems
-      .map(currentoffering => {
-        return <WishlistItem offering={currentoffering.offeringId} key={currentoffering._id}/>;
+      .map(offering => {
+        return <WishlistItem isSteward={offering.isSteward} offering={offering.offeringId} key={offering._id}/>;
       })
   }
 
@@ -109,17 +98,17 @@ export default class OfferingsList extends Component {
 	  let dataset = e.target.options[idx].dataset;
     
     // TODO: get this by Player id, is it set in the select option?
-    axios.get('/offerings/byPlayer/' + e.target.value)
-      .then(response => {
-        if (response.data.length > 0) {
-          this.setState({
-            offerings: response.data
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    // axios.get('/offerings/byPlayer/' + e.target.value)
+    //   .then(response => {
+    //     if (response.data.length > 0) {
+    //       this.setState({
+    //         offerings: response.data
+    //       })
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //   })
 
     axios.get('/wishlists/' + dataset.playerid)
       .then(response => {
@@ -172,14 +161,12 @@ export default class OfferingsList extends Component {
           <thead className="thead-light">
             <tr>
               <th>Player name</th>
-              <th>Official name</th>
               <th>Title</th>
               <th>Description</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            { this.offeringsList() }
             { this.wishlistList() }
           </tbody>
         </table>
