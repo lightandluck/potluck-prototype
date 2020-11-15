@@ -206,6 +206,18 @@ export default class DraggableExample extends React.Component {
       result.source.index, 
       result.destination.index
     );
+    
+    // Create an array of only fields needed to update wishlist
+    let updateWishlist = wishlistItems.map(function(item) { 
+      return { 
+        "isSteward": item["isSteward"], 
+        "offeringId": item["offeringId"]._id
+    }})
+
+    axios.put('/wishlists/update/' + this.state.playerId, updateWishlist)
+      .then(res => {
+        console.log(res.data);
+      })
 
     this.setState(
       {

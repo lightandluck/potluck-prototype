@@ -27,6 +27,7 @@ router.route('/add').post((req, res) => {
     isSteward: req.body.isSteward || false
   }
 
+  // TODO: Test if findbyId works here
   const query = Wishlist.find({ "playerId": playerId })
     // .then(docs => console.log(docs));
 
@@ -51,6 +52,20 @@ router.route('/add').post((req, res) => {
       else {
         res.status(400).json(err);
       }      
+    });
+});
+
+router.route('/update/:id').put((req, res) => {
+  const query = Wishlist.find({ "playerId": req.params.id })
+
+  query.updateOne(
+    {},
+    {
+      $set: { "offerings": req.body }
+    })
+    .then(() => res.json('Wishlist updated!'))
+    .catch(err => {
+      res.status(400).json(err);
     });
 });
 
