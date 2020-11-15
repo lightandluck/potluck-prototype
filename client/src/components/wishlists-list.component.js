@@ -270,6 +270,7 @@ export default class DraggableExample extends React.Component {
                       <Draggable key={item._id} draggableId={item._id} index={index}>
                         {(provided, snapshot) => (
                           <DraggableRow
+                            className={item.isSteward ? "offering" : "potluck-item"}
                             ref={provided.innerRef}
                             isDragging={snapshot.isDragging}
                             isDraggingOver={droppableSnapshot.isDraggingOver}
