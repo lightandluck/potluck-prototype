@@ -21,9 +21,6 @@ export default class Navbar extends Component {
           <li className="navbar-item">
           <Link to="/wishlist" className="nav-link">Wishlist</Link>
           </li>
-          <li className="navbar-item">
-          <Link to="/table" className="nav-link">Reorder Table</Link>
-          </li>
         </ul>
         </div>
       </nav>
