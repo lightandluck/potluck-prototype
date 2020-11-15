@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+// TODO: Add confirmation to delete action!
 const Offering = props => (
   <tr className="offering">
     <td>{props.offering.playerName}</td>
@@ -9,7 +10,7 @@ const Offering = props => (
     <td>{props.offering.title}</td>
     <td>{props.offering.description}</td>
     <td>
-      <Link to={"/edit/"+props.offering._id}>edit</Link> | <button onClick={() => { props.deleteOffering(props.offering._id) }}>delete</button>
+      <button><Link to={"/edit/"+props.offering._id}>edit</Link></button> | <Link to="" onClick={() => { props.deleteOffering(props.offering._id) }}>delete</Link>
     </td>
   </tr>
 )

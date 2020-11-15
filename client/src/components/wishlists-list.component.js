@@ -229,6 +229,8 @@ export default class DraggableExample extends React.Component {
     );
   }
 
+  // TODO: Add ability to delete from wishlist
+
   render() {
     return (
       <React.Fragment>

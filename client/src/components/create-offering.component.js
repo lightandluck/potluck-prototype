@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+// TODO:  Add feedback after done creating offering. Where to go afterwards?
+//        Can send user to blank form to create another offering, 
+//        or send them to the list??? Need advice
 
 export default class CreateOffering extends Component {
   constructor(props) {
