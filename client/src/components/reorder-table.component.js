@@ -117,20 +117,83 @@ const reorder = (list, startIndex, endIndex) => {
 export default class DraggableExample extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      offerings: []
+      playerName: '',
+      playerId: '',
+      players: [],
+      wishlistItems: []
     };
+
+    this.currentPlayer = React.createRef();
+    this.onChangePlayerName = this.onChangePlayerName.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
   }
   
-  componentDidMount() {
-    axios.get('/offerings')
+  componentDidMount() {    
+    axios.get('/players')
+    .then(response => {
+      if (response.data.length > 0) {
+        let playerData = response.data,
+            playerId = playerData[0]._id,
+            playerName = playerData[0].name
+        
+          this.setState({
+            players: playerData.map(player => { 
+              return { "name": player.name, "_id": player._id }
+            }),
+            playerName: playerName,
+            playerId: playerId
+          })
+
+        axios.get('/wishlists/' + playerId)
+          .then(response => {
+            if (response.data === null) {
+              this.setState({ 
+                wishlistItems: []
+              })
+            }
+            else {
+              this.setState({ 
+                wishlistItems: response.data.offerings
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          }) 
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })   
+  }
+
+  onChangePlayerName(e) {
+    let idx = e.target.selectedIndex;
+	  let dataset = e.target.options[idx].dataset;
+
+    axios.get('/wishlists/' + dataset.playerid)
       .then(response => {
-        this.setState({ offerings: response.data })
+        if (response.data === null) {
+          this.setState({ 
+            wishlistItems: []
+          })
+        }
+        else {
+          this.setState({
+            wishlistItems: response.data.offerings
+          })
+        }
       })
       .catch((error) => {
         console.log(error);
       })
+
+    this.setState({
+      playerName: e.target.value,
+      playerId: dataset.playerid
+    })
   }
 
   onDragEnd(result) {
@@ -138,11 +201,15 @@ export default class DraggableExample extends React.Component {
       return;
     }
 
-    const offerings = reorder(this.state.offerings, result.source.index, result.destination.index);
+    const wishlistItems = reorder(
+      this.state.wishlistItems, 
+      result.source.index, 
+      result.destination.index
+    );
 
     this.setState(
       {
-        offerings
+        wishlistItems
       },
       () => {
         document.getElementById(result.draggableId).focus();
@@ -152,63 +219,81 @@ export default class DraggableExample extends React.Component {
 
   render() {
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Table>
-          <Head>
-            <HeaderRow>
-              <HeaderCell isMinimum />
-              <HeaderCell>Title</HeaderCell>
-              <HeaderCell>Player</HeaderCell>
-              <HeaderCell>Description</HeaderCell>
-              <HeaderCell>Official name</HeaderCell>
-            </HeaderRow>
-          </Head>
-          <Droppable droppableId="droppable">
-            {(provided, droppableSnapshot) => {
-              return (
-                <Body ref={provided.innerRef} isDraggingOver={droppableSnapshot.isDraggingOver}>
-                  {this.state.offerings.map((offering, index) => (
-                    <Draggable key={offering._id} draggableId={offering._id} index={index}>
-                      {(provided, snapshot) => (
-                        <DraggableRow
-                          ref={provided.innerRef}
-                          isDragging={snapshot.isDragging}
-                          isDraggingOver={droppableSnapshot.isDraggingOver}
-                          isHovered={snapshot.isDragging}
-                          isFocused={
-                            droppableSnapshot.isDraggingOver ? snapshot.isDragging : undefined
-                          }
-                          {...provided.draggableProps.style}
-                          {...provided.draggableProps}
-                        >
-                          <DraggableCell isMinimum isDragOccurring={snapshot.isDragging}>
-                            <DraggableContainer id={offering._id} {...provided.dragHandleProps}>
-                              <span>:::</span>
-                            </DraggableContainer>
-                          </DraggableCell>
-                          <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            {offering.title}
-                          </DraggableCell>
-                          <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            {offering.playerName}
-                          </DraggableCell>
-                          <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            {offering.description}
-                          </DraggableCell>
-                          <DraggableCell isDragOccurring={snapshot.isDragging}>
-                            {offering.officialName}
-                          </DraggableCell>
-                        </DraggableRow>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </Body>
-              );
-            }}
-          </Droppable>
-        </Table>
-      </DragDropContext>
+      <React.Fragment>
+        <div className="form-group"> 
+          <label>Player name: </label>
+          <select ref={this.currentPlayer}
+              required
+              className="form-control"
+              value={this.state.playerName}
+              onChange={this.onChangePlayerName}>
+              {
+                this.state.players.map(function(player) {
+                  return <option 
+                    key={player.name}
+                    value={player.name}
+                    data-playerid={player._id}
+                    >
+                      {player.name}
+                    </option>;
+                })
+              }
+          </select>
+        </div>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Table>
+            <Head>
+              <HeaderRow>
+                <HeaderCell isMinimum />
+                <HeaderCell>Title</HeaderCell>
+                <HeaderCell>Description</HeaderCell>
+                <HeaderCell>Player</HeaderCell>
+              </HeaderRow>
+            </Head>
+            <Droppable droppableId="droppable">
+              {(provided, droppableSnapshot) => {
+                return (
+                  <Body ref={provided.innerRef} isDraggingOver={droppableSnapshot.isDraggingOver}>
+                    {this.state.wishlistItems.map((item, index) => (
+                      <Draggable key={item._id} draggableId={item._id} index={index}>
+                        {(provided, snapshot) => (
+                          <DraggableRow
+                            ref={provided.innerRef}
+                            isDragging={snapshot.isDragging}
+                            isDraggingOver={droppableSnapshot.isDraggingOver}
+                            isHovered={snapshot.isDragging}
+                            isFocused={
+                              droppableSnapshot.isDraggingOver ? snapshot.isDragging : undefined
+                            }
+                            {...provided.draggableProps.style}
+                            {...provided.draggableProps}
+                          >
+                            <DraggableCell isMinimum isDragOccurring={snapshot.isDragging}>
+                              <DraggableContainer id={item._id} {...provided.dragHandleProps}>
+                                <span>:::</span>
+                              </DraggableContainer>
+                            </DraggableCell>
+                            <DraggableCell isDragOccurring={snapshot.isDragging}>
+                              {item.offeringId.title}
+                            </DraggableCell>                          
+                            <DraggableCell isDragOccurring={snapshot.isDragging}>
+                              {item.offeringId.description}
+                            </DraggableCell>
+                            <DraggableCell isDragOccurring={snapshot.isDragging}>
+                              {item.offeringId.playerName}
+                            </DraggableCell>
+                          </DraggableRow>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </Body>
+                );
+              }}
+            </Droppable>
+          </Table>
+        </DragDropContext>
+      </React.Fragment>
     );
   }
 }

@@ -14,6 +14,7 @@ const offeringInListSchema = new Schema({
   }
 });
 
+// TODO: Change schema 'offerings' => 'wishlist' so it's less confusing with regular offerings
 const wishlistSchema = new Schema({
     playerId: { type: Schema.Types.ObjectId, ref: 'Player', required: true, unique: true },
     offerings: [offeringInListSchema]
