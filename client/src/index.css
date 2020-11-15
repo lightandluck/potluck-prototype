@@ -16,6 +16,15 @@ code {
   background-color: hsla(197, 82.5%, 49.4%, 0.37)
 }
 
+/* HACK: This overrides zen-table styles, until we don't use them anymore */
+.offering:hover {
+  background-color: hsla(197, 82.5%, 49.4%, 0.37) !important
+}
+
 .potluck-item {
-  background-color:hsla(118.1, 93.2%, 40.6%, 0.37)
+  background-color:hsla(118.1, 93.2%, 40.6%, 0.37) 
+}
+
+.potluck-item:hover {
+  background-color:hsla(118.1, 93.2%, 40.6%, 0.37) !important
 }

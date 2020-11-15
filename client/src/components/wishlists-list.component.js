@@ -256,7 +256,7 @@ export default class DraggableExample extends React.Component {
           <Table>
             <Head>
               <HeaderRow>
-                <HeaderCell isMinimum />
+                {/* <HeaderCell isMinimum /> */}
                 <HeaderCell>Title</HeaderCell>
                 <HeaderCell>Description</HeaderCell>
                 <HeaderCell>Player</HeaderCell>
@@ -272,20 +272,22 @@ export default class DraggableExample extends React.Component {
                           <DraggableRow
                             className={item.isSteward ? "offering" : "potluck-item"}
                             ref={provided.innerRef}
-                            isDragging={snapshot.isDragging}
-                            isDraggingOver={droppableSnapshot.isDraggingOver}
-                            isHovered={snapshot.isDragging}
-                            isFocused={
-                              droppableSnapshot.isDraggingOver ? snapshot.isDragging : undefined
-                            }
+                            // isDragging={snapshot.isDragging}
+                            // isDraggingOver={droppableSnapshot.isDraggingOver}
+                            // isHovered={snapshot.isDragging}
+                            // isFocused={
+                            //   droppableSnapshot.isDraggingOver ? snapshot.isDragging : undefined
+                            // }
                             {...provided.draggableProps.style}
                             {...provided.draggableProps}
+                            id={item._id}
+                            {...provided.dragHandleProps}
                           >
-                            <DraggableCell isMinimum isDragOccurring={snapshot.isDragging}>
+                            {/* <DraggableCell isMinimum isDragOccurring={snapshot.isDragging}>
                               <DraggableContainer id={item._id} {...provided.dragHandleProps}>
                                 <span>:::</span>
                               </DraggableContainer>
-                            </DraggableCell>
+                            </DraggableCell> */}
                             <DraggableCell isDragOccurring={snapshot.isDragging}>
                               {item.offeringId.title}
                             </DraggableCell>                          
