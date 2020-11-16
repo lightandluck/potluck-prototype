@@ -13,7 +13,7 @@ router.route('/').get((req, res) => {
 
 router.route('/:id').get((req, res) => {
   Wishlist.findOne({ playerId: req.params.id })
-      .populate('offerings.offeringId', '-acceptableTrades -updatedAt -createdAt -__v')
+      .populate('offerings.offeringId', '-updatedAt -createdAt -__v')
       .populate('playerId', 'name')
       .then(wishlist => res.json(wishlist))
       .catch(err => res.status(400).json('Error: ' + err));    

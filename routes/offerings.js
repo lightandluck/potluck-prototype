@@ -13,7 +13,6 @@ router.route('/add').post((req, res) => {
   const officialName = req.body.officialName;
   const title = req.body.title;
   const description = req.body.description;
-  const acceptableTrades = req.body.acceptableTrades;
   
 
   const newOffering = new Offering({
@@ -21,8 +20,7 @@ router.route('/add').post((req, res) => {
     playerId,
     officialName,
     title,
-    description,
-    acceptableTrades
+    description
   });
 
   newOffering.save()
@@ -63,7 +61,6 @@ router.route('/update/:id').post((req, res) => {
       offering.officialName = req.body.officialName;
       offering.title = req.body.title;
       offering.description = req.body.description;
-      offering.acceptableTrades = req.body.acceptableTrades;
       
       offering.save()
         .then(() => res.json('Offering updated!'))
