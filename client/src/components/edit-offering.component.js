@@ -58,9 +58,19 @@ export default class EditOffering extends Component {
 
     console.log(offering);
 
-    await axios.post('/offerings/update/'+this.props.match.params.id, offering)
+    axios.post('/offerings/update/'+this.props.match.params.id, offering)
       .then(res => {
-        console.log(res.data);
+        const offeringInList = {
+          playerId: this.state.playerId,
+          offeringId: this.props.match.params.id,
+          isSteward: true
+        }
+    
+        axios.post('/wishlists/add', offeringInList)
+          .then(res => {
+            console.log(res.data)
+            window.location = '/';
+          })
       });
   }
 
