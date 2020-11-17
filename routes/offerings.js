@@ -70,6 +70,7 @@ router.route('/update/:id').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// TODO: Add some error handling for this
 function generateOfficialName() {
   return Seed.findOne()
     .then(seed => { 
@@ -78,25 +79,5 @@ function generateOfficialName() {
       return seed.save().then(() => name);
     })
  };
-
-  // let officialName = await Seed.findOne()
-  //   .then(seed => { 
-  //     let name = "WAWG-" + seed.counter.toString();
-  //     // seed.counter += 1;
-  //     // seed.save()
-  //     //   .then(seed => { 
-  //     //     console.log('Counter incremented to: ' + seed.counter.toString());
-  //     //   })
-  //     //   .catch(err => {
-  //     //     // console.log(err);
-  //     //   });
-  //     return name;
-  //   })
-  //   .catch(err => {
-  //     // console.log(err);
-  //   });
-  
-  // return officialName;
-// };
 
 module.exports = router;

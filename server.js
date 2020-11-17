@@ -17,6 +17,7 @@ if (process.env.NODE_ENV === 'production') {
   uri = process.env.ATLAS_URI;
 }
 
+// TODO: Figure out what all these options are and if they're needed.
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 
 const connection = mongoose.connection;
@@ -30,6 +31,7 @@ const offeringsRouter = require('./routes/offerings');
 const wishlistsRouter = require('./routes/wishlists');
 const seedsRouter = require('./routes/seeds');
 
+// Creates API routes for our use: http://localhost:5000
 app.use('/players', playersRouter);
 app.use('/offerings', offeringsRouter);
 app.use('/wishlists', wishlistsRouter);
