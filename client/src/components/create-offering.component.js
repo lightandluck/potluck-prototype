@@ -10,7 +10,6 @@ export default class CreateOffering extends Component {
     super(props);
 
     this.onChangePlayerName = this.onChangePlayerName.bind(this);
-    this.onChangeOfficialName = this.onChangeOfficialName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -18,7 +17,6 @@ export default class CreateOffering extends Component {
     this.state = {
       playerName: '',
       playerId: '',
-      officialName: '',
       title: '',
       description: '',
       players: []
@@ -56,12 +54,6 @@ export default class CreateOffering extends Component {
     })
   }
 
-  onChangeOfficialName(e) {
-    this.setState({
-      officialName: e.target.value
-    })
-  }
-
   onChangeTitle(e) {
     this.setState({
       title: e.target.value
@@ -80,7 +72,6 @@ export default class CreateOffering extends Component {
     const offering = {
       playerName: this.state.playerName,
       playerId: this.state.playerId,
-      officialName: this.state.officialName,
       title: this.state.title,
       description: this.state.description
     };
@@ -94,7 +85,7 @@ export default class CreateOffering extends Component {
           offeringId: res.data._id,
           isSteward: true
         }
-
+        
         axios.post('/wishlists/add', offeringInList)
           .then(res => {
             console.log(res.data);
@@ -130,15 +121,6 @@ export default class CreateOffering extends Component {
                 })
               }
           </select>
-        </div>
-        <div className="form-group"> 
-          <label>Official name: </label>
-          <input type="text"
-              required
-              className="form-control"
-              value={this.state.officialName}
-              onChange={this.onChangeOfficialName}
-              />
         </div>
         <div className="form-group">
           <label>Title: </label>
