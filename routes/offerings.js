@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Offering = require('../models/offering.model');
+let Seed = require('../models/seed.model');
 
 router.route('/').get((req, res) => {
   Offering.find()
@@ -7,13 +8,14 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route('/add').post(async (req, res) => {
   const playerName = req.body.playerName;
   const playerId = req.body.playerId;
-  const officialName = req.body.officialName;
   const title = req.body.title;
   const description = req.body.description;
   
+  let officialName = await generateOfficialName();
+  console.log(officialName)
 
   const newOffering = new Offering({
     playerName,
@@ -68,5 +70,34 @@ router.route('/update/:id').post((req, res) => {
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+function generateOfficialName() {
+  const officialName = Seed.findOne()
+    .then(seed => { 
+      let name = "WAWG-" + seed.counter.toString();
+      return name;
+    })
+  return officialName;
+ };
+
+  // let officialName = await Seed.findOne()
+  //   .then(seed => { 
+  //     let name = "WAWG-" + seed.counter.toString();
+  //     // seed.counter += 1;
+  //     // seed.save()
+  //     //   .then(seed => { 
+  //     //     console.log('Counter incremented to: ' + seed.counter.toString());
+  //     //   })
+  //     //   .catch(err => {
+  //     //     // console.log(err);
+  //     //   });
+  //     return name;
+  //   })
+  //   .catch(err => {
+  //     // console.log(err);
+  //   });
+  
+  // return officialName;
+// };
 
 module.exports = router;
