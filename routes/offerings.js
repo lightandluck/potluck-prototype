@@ -15,7 +15,6 @@ router.route('/add').post(async (req, res) => {
   const description = req.body.description;
   
   let officialName = await generateOfficialName();
-  console.log(officialName)
 
   const newOffering = new Offering({
     playerName,
@@ -72,12 +71,12 @@ router.route('/update/:id').post((req, res) => {
 });
 
 function generateOfficialName() {
-  const officialName = Seed.findOne()
+  return Seed.findOne()
     .then(seed => { 
       let name = "WAWG-" + seed.counter.toString();
-      return name;
+      seed.counter += 1;
+      return seed.save().then(() => name);
     })
-  return officialName;
  };
 
   // let officialName = await Seed.findOne()
