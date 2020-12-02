@@ -122,12 +122,14 @@ export default class DraggableExample extends React.Component {
       playerName: '',
       playerId: '',
       players: [],
-      wishlistItems: []
+      wishlistItems: [],
+      wantlist: ''
     };
 
     this.currentPlayer = React.createRef();
     this.onChangePlayerName = this.onChangePlayerName.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.printWantlist = this.printWantlist.bind(this);
   }
   
   componentDidMount() {    
@@ -229,6 +231,24 @@ export default class DraggableExample extends React.Component {
     );
   }
 
+  printWantlist() {
+    let wishlist = this.state.wishlistItems;
+    let wantlist = '';
+    let tradeItems = '';
+    let playerName = this.state.playerName;
+
+    for (let item of wishlist) {
+      if (!item.isSteward) {
+        tradeItems += item.offeringId.officialName + ' ';
+      }
+      else if (item.isSteward) {
+        wantlist += `(${playerName}) ${item.offeringId.officialName} : ${tradeItems} \n`;
+      }
+    }
+
+    this.setState({wantlist: wantlist});
+  }
+
   // TODO: Add ability to delete from wishlist
 
   render() {
@@ -253,6 +273,8 @@ export default class DraggableExample extends React.Component {
                 })
               }
           </select>
+          <button onClick={this.printWantlist}>Print Wantlist</button>
+          <p style={{whiteSpace: 'pre-wrap'}}>{this.state.wantlist}</p>
         </div>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Table>
@@ -290,6 +312,9 @@ export default class DraggableExample extends React.Component {
                                 <span>:::</span>
                               </DraggableContainer>
                             </DraggableCell> */}
+                            <DraggableCell isDragOccurring={snapshot.isDragging}>
+                              {item.offeringId.officialName}
+                            </DraggableCell> 
                             <DraggableCell isDragOccurring={snapshot.isDragging}>
                               {item.offeringId.title}
                             </DraggableCell>                          
