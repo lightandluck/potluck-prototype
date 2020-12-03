@@ -242,11 +242,11 @@ export default class DraggableExample extends React.Component {
         tradeItems += item.offeringId.officialName + ' ';
       }
       else if (item.isSteward) {
-        wantlist += `(${playerName}) ${item.offeringId.officialName} : ${tradeItems} \n`;
+        wantlist += `(${playerName}) ${item.offeringId.officialName} : ${tradeItems.trim()} \n`;
       }
     }
 
-    this.setState({wantlist: wantlist});
+    this.setState({wantlist: wantlist.trim()});
   }
 
   // TODO: Add ability to delete from wishlist
@@ -274,6 +274,7 @@ export default class DraggableExample extends React.Component {
               }
           </select>
           <button onClick={this.printWantlist}>Print Wantlist</button>
+          <p>Sort list by moving things you want towards the top. Any of your items below another offering means that you are willing to trade your item for the ones above it.</p>
           <p style={{whiteSpace: 'pre-wrap'}}>{this.state.wantlist}</p>
         </div>
         <DragDropContext onDragEnd={this.onDragEnd}>

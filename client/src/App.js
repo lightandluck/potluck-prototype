@@ -8,6 +8,7 @@ import EditOffering from "./components/edit-offering.component";
 import CreateOffering from "./components/create-offering.component";
 import CreatePlayer from "./components/create-player.component";
 import WishlistsList from "./components/wishlists-list.component";
+import TotalWantlist from './components/total-wantlist.component';
 
 // TODO: REALLY GOT HANDLE DELETING STUFF BETTER. Delete from all wishlist after deleting offering
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/create" component={CreateOffering} />
         <Route path="/player" component={CreatePlayer} />
         <Route path="/wishlist" component={WishlistsList} />
+        <Route path="/totalwantlist" component={TotalWantlist} />
       </div>
     </Router>
   );
