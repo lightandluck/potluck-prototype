@@ -1,5 +1,5 @@
 # Potluck Prototype
-This is an MVP for creating wantlists for TradeMaximizer. The hope is that it can facilitate a math trade for things other than boardgames, which was the intention of the original TradeMaximizer.
+This is an MVP for creating wantlists for TradeMaximizer. The hope is that it can facilitate a math trade for things other than boardgames, which was the intention of the original TradeMaximizer. This only creates the wantlist text file that is inputted into the TradeMaximizer .jar file. Hope is that that is turned into a service or ported to javascript in the future to be done all in app.
 
 ## How to install
 - Install mongodb, setup a database
@@ -9,6 +9,7 @@ This is an MVP for creating wantlists for TradeMaximizer. The hope is that it ca
 - To start mongodb, start from command line: `mongod --auth`
 - Run server in cli tab with `nodemon server.js`. This watches server files and reloads automatically
 - Run front-end app by `cd client`, then `npm run start`. This also hot reloads
+- Create a `seeds` collection with one entry with `counter: 0` property in database
 
 ## Innovation
 To create the wantlists instead of using a grid like the OLWLG and Abecorn, or setting individual values, instead we simply sort a list. 
