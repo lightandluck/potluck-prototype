@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const uri = process.env.LOCAL_URI;
+let uri = process.env.LOCAL_URI;
 if (process.env.NODE_ENV === 'production') {
   uri = process.env.ATLAS_URI;
 }
