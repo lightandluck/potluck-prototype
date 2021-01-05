@@ -72,6 +72,7 @@ router.route('/update/:id').post((req, res) => {
 
 // TODO: Add some error handling for this
 function generateOfficialName() {
+  // TODO: Use $inc operator instead or https://kb.objectrocket.com/mongo-db/auto-increment-sequence-in-mongodb-1276
   return Seed.findOne()
     .then(seed => { 
       let name = "WAWG-" + seed.counter.toString();
