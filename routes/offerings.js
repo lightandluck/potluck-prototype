@@ -57,7 +57,9 @@ router.route('/:id').delete((req, res) => {
 
 router.route('/update/:id').post((req, res) => {
   Offering.findById(req.params.id)
-    .then(offering => {
+    .then(offering => { 
+      // TODO: Confirm that `offering` passed as parameter to arrow function makes sense
+      //       and is updating the correct object
       offering.playerName = req.body.playerName;
       offering.officialName = req.body.officialName;
       offering.title = req.body.title;

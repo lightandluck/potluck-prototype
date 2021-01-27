@@ -12,32 +12,29 @@ export default class TotalWantlist extends Component {
   }
 
   async componentDidMount() {
-    await axios.get('/offerings').
-      then(response => {
-        let officialNamesList = ''
-        for (let item of response.data) {
-          officialNamesList += `${item.officialName} ===> "${item.title}" (from ${item.playerName}) \n`;
-        }
+    await axios.get('/offerings').then(response => {
+      let officialNamesList = ''
+      for (let item of response.data) {
+        officialNamesList += `${item.officialName} ===> "${item.title}" (from ${item.playerName}) \n`;
+      }
 
-        this.setState({
-          officialNamesList: officialNamesList.trim()
-        })
-      });
-    
-    await axios.get('/players').
-      then(async response => {
-        let wantlist = ''
-        for (let player of response.data) {
-          await axios.get('/wishlists/' + player._id)
-            .then(response => {
-              wantlist += this.printWantlist(player.name, response.data.offerings) + '\n';
-            })
-        }
-
-        this.setState({
-          wantlist: wantlist.trim()
-        });
+      this.setState({
+        officialNamesList: officialNamesList.trim()
       })
+    });
+    
+    // TODO: 
+    await axios.get('/players').then(async players => {
+      let wantlist = ''
+      for (let player of players.data) {
+        let playerWantlist = await axios.get('/wishlists/' + player._id)
+        wantlist += this.printWantlist(player.name, playerWantlist.data.offerings) + '\n';
+      }
+
+      this.setState({
+        wantlist: wantlist.trim()
+      });
+    })
   }
 
   render() {

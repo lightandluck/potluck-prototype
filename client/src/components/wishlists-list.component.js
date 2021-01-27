@@ -94,11 +94,11 @@ class DraggableCell extends React.Component {
   }
 }
 
-const DraggableContainer = styled.div`
-  :focus {
-    outline: none;
-  }
-`;
+// const DraggableContainer = styled.div`
+//   :focus {
+//     outline: none;
+//   }
+// `;
 
 // const getItems = count =>
 //   Array.from({ length: count }, (v, k) => k).map(k => ({
