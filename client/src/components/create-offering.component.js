@@ -89,6 +89,7 @@ export default class CreateOffering extends Component {
         axios.post('/wishlists/add', offeringInList)
           .then(res => {
             console.log(res.data);
+            console.log(offering);
           })
           .catch(res => {
             console.log('Error: ')
