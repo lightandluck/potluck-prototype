@@ -28,7 +28,9 @@ export default class TotalWantlist extends Component {
       let wantlist = ''
       for (let player of players.data) {
         let playerWantlist = await axios.get('/wishlists/' + player._id)
-        wantlist += this.printWantlist(player.name, playerWantlist.data.offerings) + '\n';
+        if (playerWantlist.data) {
+          wantlist += this.printWantlist(player.name, playerWantlist.data.offerings) + '\n';
+        }
       }
 
       this.setState({

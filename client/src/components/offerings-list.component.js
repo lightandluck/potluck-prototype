@@ -36,8 +36,8 @@ export default class OfferingsList extends Component {
     this.addToWishlist = this.addToWishlist.bind(this);
 
     this.state = {
-      playerName: '',
-      playerId: '',
+      playerName: localStorage.getItem('playerName') || '',
+      playerId: localStorage.getItem('playerId') || '',
       offerings: [],
       players: []
     };
@@ -60,8 +60,8 @@ export default class OfferingsList extends Component {
         if (response.data.length > 0) {
           this.setState({
             players: response.data.map(player => { return { "name": player.name, "_id": player._id }}),
-            playerName: response.data[0].name,
-            playerId: response.data[0]._id
+            playerName: localStorage.getItem('playerName') || response.data[0].name,
+            playerId: localStorage.getItem('playerId') || response.data[0]._id
           })
         }
       })
@@ -117,7 +117,10 @@ export default class OfferingsList extends Component {
   onChangePlayerName(e) {
     let idx = e.target.selectedIndex;
 	  let dataset = e.target.options[idx].dataset;
-  
+    
+    localStorage.setItem('playerName', e.target.value);
+    localStorage.setItem('playerId', dataset.playerid);
+
     this.setState({
       playerName: e.target.value,
       playerId: dataset.playerid

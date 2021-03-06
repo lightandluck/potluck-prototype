@@ -119,8 +119,8 @@ export default class DraggableExample extends React.Component {
     super(props);
 
     this.state = {
-      playerName: '',
-      playerId: '',
+      playerName: localStorage.getItem('playerName') || '',
+      playerId: localStorage.getItem('playerId') || '',
       players: [],
       wishlistItems: [],
       wantlist: ''
@@ -137,8 +137,8 @@ export default class DraggableExample extends React.Component {
     .then(response => {
       if (response.data.length > 0) {
         let playerData = response.data,
-            playerId = playerData[0]._id,
-            playerName = playerData[0].name
+            playerId = localStorage.getItem('playerId') || playerData[0]._id,
+            playerName = localStorage.getItem('playerName') || playerData[0].name
         
           this.setState({
             players: playerData.map(player => { 
@@ -191,6 +191,9 @@ export default class DraggableExample extends React.Component {
       .catch((error) => {
         console.log(error);
       })
+    
+    localStorage.setItem('playerName', e.target.value);
+    localStorage.setItem('playerId', dataset.playerid);
 
     this.setState({
       playerName: e.target.value,
